@@ -26,6 +26,7 @@ import BookDetailModal from '@/components/BookDetailModal';
 import Spinner from '@/components/Spinner';
 import SideBar from './sidebar/SideBar';
 import Notebook from './notebook/Notebook';
+import ReadingAssistant from './readingAssistant/ReadingAssistant';
 import BooksGrid from './BooksGrid';
 
 const ReaderContent: React.FC<{ ids?: string; settings: SystemSettings }> = ({ ids, settings }) => {
@@ -166,6 +167,7 @@ const ReaderContent: React.FC<{ ids?: string; settings: SystemSettings }> = ({ i
       <SideBar onGoToLibrary={handleCloseBooksToLibrary} />
       <BooksGrid bookKeys={bookKeys} onCloseBook={handleCloseBook} />
       <Notebook />
+      <ReadingAssistant />
       {showDetailsBook && (
         <BookDetailModal
           isOpen={!!showDetailsBook}
