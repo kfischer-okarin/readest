@@ -88,3 +88,10 @@ pnpm build-macos-universal # macOS Universal
 - No test framework currently configured
 - ESLint and TypeScript strict mode enforced
 - Custom CSP implementation for security
+
+## Claude Code Guidelines
+
+- In most of the cases you will work inside the `/apps/readest-app/` directory
+- Always run
+  `pnpm lint --fix --file path/to/edited-file1.tsx path/to/edited-file2.tsx ...`
+  after you finished editing files
