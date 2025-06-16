@@ -1,8 +1,10 @@
 import clsx from 'clsx';
 import React, { useState } from 'react';
+/* SUPABASE_DISABLED
 import { useRouter } from 'next/navigation';
 import { PiUserCircle } from 'react-icons/pi';
 import { PiUserCircleCheck } from 'react-icons/pi';
+*/
 import { MdCheck } from 'react-icons/md';
 import { TbSunMoon } from 'react-icons/tb';
 import { BiMoon, BiSun } from 'react-icons/bi';
@@ -10,19 +12,21 @@ import { BiMoon, BiSun } from 'react-icons/bi';
 import { setAboutDialogVisible } from '@/components/AboutWindow';
 import { isTauriAppPlatform, isWebAppPlatform } from '@/services/environment';
 import { DOWNLOAD_READEST_URL } from '@/services/constants';
-import { useAuth } from '@/context/AuthContext';
+// SUPABASE_DISABLED import { useAuth } from '@/context/AuthContext';
 import { useEnv } from '@/context/EnvContext';
 import { useThemeStore } from '@/store/themeStore';
-import { useQuotaStats } from '@/hooks/useQuotaStats';
+// SUPABASE_DISABLED import { useQuotaStats } from '@/hooks/useQuotaStats';
 import { useSettingsStore } from '@/store/settingsStore';
 import { useTranslation } from '@/hooks/useTranslation';
+/* SUPABASE_DISABLED
 import { useResponsiveSize } from '@/hooks/useResponsiveSize';
 import { navigateToLogin, navigateToProfile } from '@/utils/nav';
+*/
 import { tauriHandleSetAlwaysOnTop, tauriHandleToggleFullScreen } from '@/utils/window';
 import { optInTelemetry, optOutTelemetry } from '@/utils/telemetry';
-import UserAvatar from '@/components/UserAvatar';
+// SUPABASE_DISABLED import UserAvatar from '@/components/UserAvatar';
 import MenuItem from '@/components/MenuItem';
-import Quota from '@/components/Quota';
+// SUPABASE_DISABLED import Quota from '@/components/Quota';
 
 interface SettingsMenuProps {
   setIsDropdownOpen?: (isOpen: boolean) => void;
@@ -30,12 +34,12 @@ interface SettingsMenuProps {
 
 const SettingsMenu: React.FC<SettingsMenuProps> = ({ setIsDropdownOpen }) => {
   const _ = useTranslation();
-  const router = useRouter();
+  // SUPABASE_DISABLED const router = useRouter();
   const { envConfig, appService } = useEnv();
-  const { user } = useAuth();
+  // SUPABASE_DISABLED const { user } = useAuth();
   const { themeMode, setThemeMode } = useThemeStore();
   const { settings, setSettings, saveSettings } = useSettingsStore();
-  const [isAutoUpload, setIsAutoUpload] = useState(settings.autoUpload);
+  // SUPABASE_DISABLED const [isAutoUpload, setIsAutoUpload] = useState(settings.autoUpload);
   const [isAutoCheckUpdates, setIsAutoCheckUpdates] = useState(settings.autoCheckUpdates);
   const [isAlwaysOnTop, setIsAlwaysOnTop] = useState(settings.alwaysOnTop);
   const [isScreenWakeLock, setIsScreenWakeLock] = useState(settings.screenWakeLock);
@@ -44,9 +48,11 @@ const SettingsMenu: React.FC<SettingsMenuProps> = ({ setIsDropdownOpen }) => {
     settings.autoImportBooksOnOpen,
   );
   const [isTelemetryEnabled, setIsTelemetryEnabled] = useState(settings.telemetryEnabled);
+  /* SUPABASE_DISABLED
   const iconSize = useResponsiveSize(16);
 
   const { quotas } = useQuotaStats();
+  */
 
   const showAboutReadest = () => {
     setAboutDialogVisible(true);
@@ -58,6 +64,7 @@ const SettingsMenu: React.FC<SettingsMenuProps> = ({ setIsDropdownOpen }) => {
     setIsDropdownOpen?.(false);
   };
 
+  /* SUPABASE_DISABLED
   const handleUserLogin = () => {
     navigateToLogin(router);
     setIsDropdownOpen?.(false);
@@ -67,6 +74,7 @@ const SettingsMenu: React.FC<SettingsMenuProps> = ({ setIsDropdownOpen }) => {
     navigateToProfile(router);
     setIsDropdownOpen?.(false);
   };
+  */
 
   const cycleThemeMode = () => {
     const nextMode = themeMode === 'auto' ? 'light' : themeMode === 'light' ? 'dark' : 'auto';
@@ -92,6 +100,7 @@ const SettingsMenu: React.FC<SettingsMenuProps> = ({ setIsDropdownOpen }) => {
     setIsDropdownOpen?.(false);
   };
 
+  /* SUPABASE_DISABLED
   const toggleAutoUploadBooks = () => {
     settings.autoUpload = !settings.autoUpload;
     setSettings(settings);
@@ -102,6 +111,7 @@ const SettingsMenu: React.FC<SettingsMenuProps> = ({ setIsDropdownOpen }) => {
       navigateToLogin(router);
     }
   };
+  */
 
   const toggleAutoImportBooksOnOpen = () => {
     settings.autoImportBooksOnOpen = !settings.autoImportBooksOnOpen;
@@ -143,9 +153,11 @@ const SettingsMenu: React.FC<SettingsMenuProps> = ({ setIsDropdownOpen }) => {
     setIsTelemetryEnabled(settings.telemetryEnabled);
   };
 
+  /* SUPABASE_DISABLED
   const avatarUrl = user?.user_metadata?.['picture'] || user?.user_metadata?.['avatar_url'];
   const userFullName = user?.user_metadata?.['full_name'];
   const userDisplayName = userFullName ? userFullName.split(' ')[0] : null;
+  */
 
   return (
     <div
@@ -155,6 +167,7 @@ const SettingsMenu: React.FC<SettingsMenuProps> = ({ setIsDropdownOpen }) => {
         'z-20 mt-2 max-w-[90vw] shadow-2xl',
       )}
     >
+      {/* SUPABASE_DISABLED
       {user ? (
         <MenuItem
           label={
@@ -184,6 +197,7 @@ const SettingsMenu: React.FC<SettingsMenuProps> = ({ setIsDropdownOpen }) => {
         Icon={isAutoUpload ? MdCheck : undefined}
         onClick={toggleAutoUploadBooks}
       />
+      */}
       {isTauriAppPlatform() && !appService?.isMobile && (
         <MenuItem
           label={_('Auto Import on File Open')}
