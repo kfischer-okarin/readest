@@ -1,5 +1,6 @@
 'use client';
 
+/* SUPABASE_DISABLED
 import React, { createContext, useState, useContext, ReactNode, useEffect } from 'react';
 import { User } from '@supabase/supabase-js';
 import { supabase } from '@/utils/supabase';
@@ -100,4 +101,18 @@ export const useAuth = (): AuthContextType => {
   const context = useContext(AuthContext);
   if (!context) throw new Error('useAuth must be used within AuthProvider');
   return context;
+};
+END SUPABASE_DISABLED */
+
+export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  return <>{children}</>;
+};
+
+export const useAuth = () => {
+  return {
+    token: null,
+    user: null,
+    login: () => {},
+    logout: () => {},
+  };
 };
