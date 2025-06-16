@@ -1,6 +1,12 @@
 import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
-import { MdDelete, MdCloudDownload, MdCloudUpload } from 'react-icons/md';
+import {
+  MdDelete,
+  /* SUPABASE_DISABLED
+  MdCloudDownload,
+  MdCloudUpload,
+  */
+} from 'react-icons/md';
 
 import { Book } from '@/types/book';
 import { BookDoc } from '@/libs/document';
@@ -34,8 +40,10 @@ const BookDetailModal = ({
   book,
   isOpen,
   onClose,
+  /* SUPABASE_DISABLED
   handleBookDownload,
   handleBookUpload,
+  */
   handleBookDelete,
 }: BookDetailModalProps) => {
   const _ = useTranslation();
@@ -81,6 +89,7 @@ const BookDetailModal = ({
     }
   };
 
+  /* SUPABASE_DISABLED
   const handleRedownload = async () => {
     handleClose();
     if (handleBookDownload) {
@@ -94,6 +103,7 @@ const BookDetailModal = ({
       handleBookUpload(book);
     }
   };
+  */
 
   if (!bookMeta)
     return (
@@ -135,6 +145,7 @@ const BookDetailModal = ({
                       <MdDelete className='fill-red-500' />
                     </button>
                   )}
+                  {/* SUPABASE_DISABLED
                   {book.uploadedAt && handleBookDownload && (
                     <button onClick={handleRedownload}>
                       <MdCloudDownload className='fill-base-content' />
@@ -145,6 +156,7 @@ const BookDetailModal = ({
                       <MdCloudUpload className='fill-base-content' />
                     </button>
                   )}
+                  */}
                 </div>
               </div>
             </div>
