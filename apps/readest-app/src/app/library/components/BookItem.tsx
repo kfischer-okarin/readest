@@ -1,18 +1,22 @@
 import clsx from 'clsx';
 import { MdCheckCircle, MdCheckCircleOutline } from 'react-icons/md';
 import {
+  /* SUPABASE_DISABLED
   LiaCloudUploadAltSolid,
   LiaCloudDownloadAltSolid,
+  */
   LiaInfoCircleSolid,
 } from 'react-icons/lia';
 
 import { Book } from '@/types/book';
 import { useEnv } from '@/context/EnvContext';
+/* SUPABASE_DISABLED
 import { useAuth } from '@/context/AuthContext';
 import { useRouter } from 'next/navigation';
+*/
 import { useResponsiveSize } from '@/hooks/useResponsiveSize';
 import { LibraryViewModeType } from '@/types/settings';
-import { navigateToLogin } from '@/utils/nav';
+// SUPABASE_DISABLED import { navigateToLogin } from '@/utils/nav';
 import { formatAuthors } from '@/utils/book';
 import ReadingProgress from './ReadingProgress';
 import BookCover from '@/components/BookCover';
@@ -33,13 +37,17 @@ const BookItem: React.FC<BookItemProps> = ({
   book,
   isSelectMode,
   selectedBooks,
+  /* SUPABASE_DISABLED
   transferProgress,
   handleBookUpload,
   handleBookDownload,
+  */
   showBookDetailsModal,
 }) => {
+  /* SUPABASE_DISABLED
   const router = useRouter();
   const { user } = useAuth();
+  */
   const { appService } = useEnv();
   const iconSize15 = useResponsiveSize(15);
 
@@ -120,6 +128,7 @@ const BookItem: React.FC<BookItemProps> = ({
                 </div>
               </button>
             )}
+            {/* SUPABASE_DISABLED
             {transferProgress !== null ? (
               transferProgress === 100 ? null : (
                 <div
@@ -162,6 +171,7 @@ const BookItem: React.FC<BookItemProps> = ({
                 </button>
               )
             )}
+            SUPABASE_DISABLED END */}
           </div>
         </div>
       </div>
