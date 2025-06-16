@@ -1,22 +1,22 @@
 import clsx from 'clsx';
 import React, { useEffect } from 'react';
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+// SUPABASE_DISABLED import { useRouter } from 'next/navigation';
 import { BiMoon, BiSun } from 'react-icons/bi';
 import { TbSunMoon } from 'react-icons/tb';
 import { MdZoomOut, MdZoomIn, MdCheck } from 'react-icons/md';
-import { MdSync, MdSyncProblem } from 'react-icons/md';
+// SUPABASE_DISABLED import { MdSync, MdSyncProblem } from 'react-icons/md';
 
 import { MAX_ZOOM_LEVEL, MIN_ZOOM_LEVEL, ZOOM_STEP } from '@/services/constants';
 import { useEnv } from '@/context/EnvContext';
-import { useAuth } from '@/context/AuthContext';
+// SUPABASE_DISABLED import { useAuth } from '@/context/AuthContext';
 import { useThemeStore } from '@/store/themeStore';
 import { useReaderStore } from '@/store/readerStore';
-import { useBookDataStore } from '@/store/bookDataStore';
+// SUPABASE_DISABLED import { useBookDataStore } from '@/store/bookDataStore';
 import { useTranslation } from '@/hooks/useTranslation';
 import { getStyles } from '@/utils/style';
-import { navigateToLogin } from '@/utils/nav';
-import { eventDispatcher } from '@/utils/event';
+// SUPABASE_DISABLED import { navigateToLogin } from '@/utils/nav';
+// SUPABASE_DISABLED import { eventDispatcher } from '@/utils/event';
 import { getMaxInlineSize } from '@/utils/config';
 import { tauriHandleToggleFullScreen } from '@/utils/window';
 import { saveViewSettings } from '../utils/viewSettingsHelper';
@@ -34,12 +34,12 @@ const ViewMenu: React.FC<ViewMenuProps> = ({
   onSetSettingsDialogOpen,
 }) => {
   const _ = useTranslation();
-  const router = useRouter();
-  const { user } = useAuth();
+  // SUPABASE_DISABLED const router = useRouter();
+  // SUPABASE_DISABLED const { user } = useAuth();
   const { envConfig, appService } = useEnv();
-  const { getConfig } = useBookDataStore();
+  // SUPABASE_DISABLED const { getConfig } = useBookDataStore();
   const { getView, getViewSettings, setViewSettings } = useReaderStore();
-  const config = getConfig(bookKey)!;
+  // SUPABASE_DISABLED const config = getConfig(bookKey)!;
   const viewSettings = getViewSettings(bookKey)!;
 
   const { themeMode, isDarkMode, setThemeMode } = useThemeStore();
@@ -69,6 +69,7 @@ const ViewMenu: React.FC<ViewMenuProps> = ({
     setIsDropdownOpen?.(false);
   };
 
+  /* SUPABASE_DISABLED
   const handleSync = () => {
     if (!user) {
       navigateToLogin(router);
@@ -77,6 +78,7 @@ const ViewMenu: React.FC<ViewMenuProps> = ({
       eventDispatcher.dispatch('sync-book-progress', { bookKey });
     }
   };
+  */
 
   useEffect(() => {
     if (isScrolledMode === viewSettings!.scrolled) return;
@@ -102,7 +104,7 @@ const ViewMenu: React.FC<ViewMenuProps> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [invertImgColorInDark]);
 
-  const lastSyncTime = Math.max(config?.lastSyncedAtConfig || 0, config?.lastSyncedAtNotes || 0);
+  // SUPABASE_DISABLED const lastSyncTime = Math.max(config?.lastSyncedAtConfig || 0, config?.lastSyncedAtNotes || 0);
 
   return (
     <div
@@ -151,6 +153,7 @@ const ViewMenu: React.FC<ViewMenuProps> = ({
 
       <hr className='border-base-300 my-1' />
 
+      {/* SUPABASE_DISABLED
       <MenuItem
         label={
           !user
@@ -164,6 +167,7 @@ const ViewMenu: React.FC<ViewMenuProps> = ({
         Icon={user ? MdSync : MdSyncProblem}
         onClick={handleSync}
       />
+      SUPABASE_DISABLED END */}
 
       <hr className='border-base-300 my-1' />
 
