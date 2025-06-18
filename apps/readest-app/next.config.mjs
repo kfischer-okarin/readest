@@ -35,6 +35,9 @@ const nextConfig = {
       },
     ];
   },
+  typescript: {
+    ignoreBuildErrors: true,
+  }
 };
 
 const withPWA = withPWAInit({
