@@ -55,7 +55,7 @@ pnpm --filter @readest/readest-app setup-pdfjs
 # Build the application
 echo "9. Building application..."
 cd apps/readest-app
-pnpm build
+pnpm build-web
 
 # Install PM2 for process management
 echo "10. Installing PM2..."

@@ -31,7 +31,7 @@ pnpm install
 # Build the application
 echo "5. Building application..."
 cd apps/readest-app
-pnpm build
+pnpm build-web
 
 # Restart the application
 echo "6. Restarting application..."
