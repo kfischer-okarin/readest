@@ -94,30 +94,24 @@ const Annotator: React.FC<{ bookKey: string }> = ({ bookKey }) => {
     view?.deselect();
   };
 
-  // Memoize selection data to avoid unnecessary re-computations since view is not stable
-  const selectionData = useMemo(() => {
+  // Memoize selection CFI to only trigger when selection actually changes
+  const selectionCfi = useMemo(() => {
     // annotation: true means that an existing annotation was selected so skip it
     if (!selection || selection.annotated) return null;
 
-    const cfi = view?.getCFI(selection.index, selection.range);
-    if (!cfi) return null;
-
-    return {
-      text: selection.text,
-      cfi,
-    };
-  }, [selection?.text, selection?.annotated, selection?.index, selection?.range, view]);
+    return view?.getCFI(selection.index, selection.range) || null;
+  }, [selection?.annotated, selection?.index, selection?.range, view]);
 
   // Record selection changes for reading assistant
   useEffect(() => {
-    if (selectionData) {
+    if (selectionCfi && selection) {
       onUserAction({
         type: 'textSelected',
-        text: selectionData.text,
-        cfi: selectionData.cfi,
+        text: selection.text,
+        cfi: selectionCfi,
       });
     }
-  }, [selectionData]);
+  }, [selectionCfi, selection?.text]);
 
   const {
     handleScroll,
