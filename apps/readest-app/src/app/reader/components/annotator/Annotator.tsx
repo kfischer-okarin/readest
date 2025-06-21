@@ -27,6 +27,7 @@ import { getPopupPosition, getPosition, Position, TextSelection } from '@/utils/
 import { eventDispatcher } from '@/utils/event';
 import { findTocItemBS } from '@/utils/toc';
 import { HIGHLIGHT_COLOR_HEX } from '@/services/constants';
+import { useReadingAssistant } from '../../hooks/useReadingAssistant';
 import AnnotationPopup from './AnnotationPopup';
 import WiktionaryPopup from './WiktionaryPopup';
 import WikipediaPopup from './WikipediaPopup';
@@ -48,6 +49,8 @@ const Annotator: React.FC<{ bookKey: string }> = ({ bookKey }) => {
   const bookData = getBookData(bookKey)!;
   const view = getView(bookKey);
   const viewSettings = getViewSettings(bookKey)!;
+
+  const { onUserEvent } = useReadingAssistant();
 
   const [selection, setSelection] = useState<TextSelection | null>(null);
   const [showAnnotPopup, setShowAnnotPopup] = useState(false);
@@ -91,6 +94,22 @@ const Annotator: React.FC<{ bookKey: string }> = ({ bookKey }) => {
     view?.deselect();
   };
 
+  // Wrap setSelection to also call onUserEvent
+  const setSelectionWithTracking: React.Dispatch<React.SetStateAction<TextSelection | null>> = (
+    value,
+  ) => {
+    setSelection((prevSelection) => {
+      const newSelection = typeof value === 'function' ? value(prevSelection) : value;
+      if (newSelection) {
+        onUserEvent({
+          type: 'textSelected',
+          textSelection: newSelection,
+        });
+      }
+      return newSelection;
+    });
+  };
+
   const {
     handleScroll,
     handleTouchStart,
@@ -99,7 +118,7 @@ const Annotator: React.FC<{ bookKey: string }> = ({ bookKey }) => {
     handleSelectionchange,
     handleShowPopup,
     handleUpToPopup,
-  } = useTextSelector(bookKey, setSelection, handleDismissPopup);
+  } = useTextSelector(bookKey, setSelectionWithTracking, handleDismissPopup);
 
   const onLoad = (event: Event) => {
     const detail = (event as CustomEvent).detail;
