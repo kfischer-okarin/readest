@@ -2,3 +2,5 @@
 gcloud = "latest"
 node = "22.15.0"
 pnpm = "latest"
+terraform = "latest"
+
