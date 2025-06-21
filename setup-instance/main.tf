@@ -44,4 +44,9 @@ resource "google_compute_instance" "app_instance" {
       // Ephemeral public IP
     }
   }
+
+  metadata = {
+    // Allow SSH connection via gcloud
+    enable-oslogin = "TRUE"
+  }
 }
