@@ -129,3 +129,27 @@ resource "google_compute_global_forwarding_rule" "https_rule" {
 output "lb_domain" {
   value = local.lb_domain
 }
+
+####### NAT STUFF SO WE CAN DOWNLOAD PACKAGES ETC - THANKS AGAIN CHATGPT #######
+resource "google_compute_router" "nat_router" {
+  name    = "nat-router"
+  network = google_compute_instance.app_instance.network_interface.0.network
+}
+
+resource "google_compute_router_nat" "nat_gw" {
+  name                               = "nat-gateway"
+  router                             = google_compute_router.nat_router.name
+  region                             = google_compute_router.nat_router.region
+
+  # Let Google grab/rotate the external addresses automatically
+  nat_ip_allocate_option             = "AUTO_ONLY"
+
+  # Apply NAT to every subnet in the region (simplest)
+  source_subnetwork_ip_ranges_to_nat = "ALL_SUBNETWORKS_ALL_IP_RANGES"
+
+  # Optional-but-useful logging
+  log_config {
+    enable = true
+    filter = "ERRORS_ONLY"
+  }
+}
