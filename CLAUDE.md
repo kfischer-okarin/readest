@@ -11,9 +11,11 @@ Windows, Linux, Android, iOS, and Web platforms.
 
 ## Essential Commands
 
+### Inside `/apps/readest-app/`
+
 ```sh
-# Fix linting issues
-pnpm lint --fix --file path/to/edited-file1.tsx path/to/edited-file2.tsx
+# Format files with Prettier
+pnpm prettier --write path/to/edited-file1.tsx path/to/edited-file2.tsx
 ```
 
 ## Architecture
@@ -69,4 +71,4 @@ pnpm lint --fix --file path/to/edited-file1.tsx path/to/edited-file2.tsx
 ## Claude Code Guidelines
 
 - In most of the cases you will work inside the `/apps/readest-app/` directory
-- Always fix linting issues after you finished editing files
+- Always format files with prettier after you finished editing files
