@@ -1,13 +1,13 @@
-import type { TextSelection } from '@/utils/sel';
-
 type TextSelectedAction = {
   type: 'textSelected';
-  textSelection: TextSelection;
+  text: string;
+  cfi: string;
 };
 
 type HighlightCreatedAction = {
   type: 'highlightCreated';
-  textSelection: TextSelection;
+  text: string;
+  cfi: string;
 };
 
 type UserAction = TextSelectedAction | HighlightCreatedAction;

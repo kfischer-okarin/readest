@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { FiSearch } from 'react-icons/fi';
 import { FiCopy } from 'react-icons/fi';
 import { PiHighlighterFill } from 'react-icons/pi';
@@ -94,16 +94,30 @@ const Annotator: React.FC<{ bookKey: string }> = ({ bookKey }) => {
     view?.deselect();
   };
 
-  // Track selection changes with useEffect to avoid StrictMode double-invocation
-  // Only track fresh text selections, not existing annotations
+  // Memoize selection data to avoid unnecessary re-computations since view is not stable
+  const selectionData = useMemo(() => {
+    // annotation: true means that an existing annotation was selected so skip it
+    if (!selection || selection.annotated) return null;
+
+    const cfi = view?.getCFI(selection.index, selection.range);
+    if (!cfi) return null;
+
+    return {
+      text: selection.text,
+      cfi,
+    };
+  }, [selection?.text, selection?.annotated, selection?.index, selection?.range, view]);
+
+  // Record selection changes for reading assistant
   useEffect(() => {
-    if (selection && !selection.annotated) {
+    if (selectionData) {
       onUserAction({
         type: 'textSelected',
-        textSelection: selection,
+        text: selectionData.text,
+        cfi: selectionData.cfi,
       });
     }
-  }, [selection]);
+  }, [selectionData]);
 
   const {
     handleScroll,
@@ -350,10 +364,12 @@ const Annotator: React.FC<{ bookKey: string }> = ({ bookKey }) => {
       annotations.push(annotation);
       views.forEach((view) => view?.addAnnotation(annotation));
       setSelection({ ...selection, annotated: true });
-      // Track highlight creation as a separate user action
+
+      // Record highlight creation for reading assistant
       onUserAction({
         type: 'highlightCreated',
-        textSelection: selection,
+        text: selection.text,
+        cfi,
       });
     }
 
