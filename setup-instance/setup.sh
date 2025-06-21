@@ -89,7 +89,7 @@ sudo apt-get install -y nginx
 # Create nginx configuration
 sudo tee /etc/nginx/sites-available/readest << 'EOF'
 server {
-    listen 80;
+    listen 8080;
     server_name _;
 
     location / {
