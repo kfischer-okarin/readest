@@ -94,21 +94,15 @@ const Annotator: React.FC<{ bookKey: string }> = ({ bookKey }) => {
     view?.deselect();
   };
 
-  // Wrap setSelection to also call onUserEvent
-  const setSelectionWithTracking: React.Dispatch<React.SetStateAction<TextSelection | null>> = (
-    value,
-  ) => {
-    setSelection((prevSelection) => {
-      const newSelection = typeof value === 'function' ? value(prevSelection) : value;
-      if (newSelection) {
-        onUserEvent({
-          type: 'textSelected',
-          textSelection: newSelection,
-        });
-      }
-      return newSelection;
-    });
-  };
+  // Track selection changes with useEffect to avoid StrictMode double-invocation
+  useEffect(() => {
+    if (selection) {
+      onUserEvent({
+        type: 'textSelected',
+        textSelection: selection,
+      });
+    }
+  }, [selection]);
 
   const {
     handleScroll,
@@ -118,7 +112,7 @@ const Annotator: React.FC<{ bookKey: string }> = ({ bookKey }) => {
     handleSelectionchange,
     handleShowPopup,
     handleUpToPopup,
-  } = useTextSelector(bookKey, setSelectionWithTracking, handleDismissPopup);
+  } = useTextSelector(bookKey, setSelection, handleDismissPopup);
 
   const onLoad = (event: Event) => {
     const detail = (event as CustomEvent).detail;
