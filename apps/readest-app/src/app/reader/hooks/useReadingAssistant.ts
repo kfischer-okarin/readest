@@ -8,7 +8,7 @@ type TextSelectedAction = {
 type UserAction = TextSelectedAction;
 
 export function useReadingAssistant() {
-  const onUserEvent = (action: UserAction) => {
+  const onUserAction = (action: UserAction) => {
     const eventWithTimestamp = {
       ...action,
       timestamp: new Date().toISOString(),
@@ -17,5 +17,5 @@ export function useReadingAssistant() {
     console.log('Reading Assistant Event:', eventWithTimestamp);
   };
 
-  return { onUserEvent };
+  return { onUserAction };
 }

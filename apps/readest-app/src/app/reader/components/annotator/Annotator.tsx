@@ -50,7 +50,7 @@ const Annotator: React.FC<{ bookKey: string }> = ({ bookKey }) => {
   const view = getView(bookKey);
   const viewSettings = getViewSettings(bookKey)!;
 
-  const { onUserEvent } = useReadingAssistant();
+  const { onUserAction } = useReadingAssistant();
 
   const [selection, setSelection] = useState<TextSelection | null>(null);
   const [showAnnotPopup, setShowAnnotPopup] = useState(false);
@@ -97,7 +97,7 @@ const Annotator: React.FC<{ bookKey: string }> = ({ bookKey }) => {
   // Track selection changes with useEffect to avoid StrictMode double-invocation
   useEffect(() => {
     if (selection) {
-      onUserEvent({
+      onUserAction({
         type: 'textSelected',
         textSelection: selection,
       });
