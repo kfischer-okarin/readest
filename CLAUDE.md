@@ -11,32 +11,9 @@ Windows, Linux, Android, iOS, and Web platforms.
 
 ## Essential Commands
 
-### Development
-
-```bash
-# Install dependencies (from root)
-pnpm install
-pnpm --filter @readest/readest-app setup-pdfjs
-
-# Run desktop app in development
-pnpm tauri dev
-
-# Run web-only development
-pnpm dev-web
-
-# Build for production
-pnpm tauri build           # Desktop
-pnpm tauri android build   # Android
-pnpm tauri ios build       # iOS
-```
-
-### Platform-Specific Builds
-
-```bash
-pnpm build-win-x64         # Windows x64
-pnpm build-win-arm64       # Windows ARM64
-pnpm build-linux-x64       # Linux x64
-pnpm build-macos-universal # macOS Universal
+```sh
+# Fix linting issues
+pnpm lint --fix --file path/to/edited-file1.tsx path/to/edited-file2.tsx
 ```
 
 ## Architecture
@@ -92,6 +69,4 @@ pnpm build-macos-universal # macOS Universal
 ## Claude Code Guidelines
 
 - In most of the cases you will work inside the `/apps/readest-app/` directory
-- Always run
-  `pnpm lint --fix --file path/to/edited-file1.tsx path/to/edited-file2.tsx ...`
-  after you finished editing files
+- Always fix linting issues after you finished editing files
