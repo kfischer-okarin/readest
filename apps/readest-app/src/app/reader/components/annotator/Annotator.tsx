@@ -95,8 +95,9 @@ const Annotator: React.FC<{ bookKey: string }> = ({ bookKey }) => {
   };
 
   // Track selection changes with useEffect to avoid StrictMode double-invocation
+  // Only track fresh text selections, not existing annotations
   useEffect(() => {
-    if (selection) {
+    if (selection && !selection.annotated) {
       onUserAction({
         type: 'textSelected',
         textSelection: selection,
@@ -349,6 +350,11 @@ const Annotator: React.FC<{ bookKey: string }> = ({ bookKey }) => {
       annotations.push(annotation);
       views.forEach((view) => view?.addAnnotation(annotation));
       setSelection({ ...selection, annotated: true });
+      // Track highlight creation as a separate user action
+      onUserAction({
+        type: 'highlightCreated',
+        textSelection: selection,
+      });
     }
 
     const updatedConfig = updateBooknotes(bookKey, annotations);

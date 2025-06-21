@@ -1,11 +1,16 @@
-import type { TextSelection } from '../hooks/useTextSelector';
+import type { TextSelection } from '@/utils/sel';
 
 type TextSelectedAction = {
   type: 'textSelected';
   textSelection: TextSelection;
 };
 
-type UserAction = TextSelectedAction;
+type HighlightCreatedAction = {
+  type: 'highlightCreated';
+  textSelection: TextSelection;
+};
+
+type UserAction = TextSelectedAction | HighlightCreatedAction;
 
 export function useReadingAssistant() {
   const onUserAction = (action: UserAction) => {
