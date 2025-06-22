@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FiSearch } from 'react-icons/fi';
 import { FiCopy } from 'react-icons/fi';
 import { PiHighlighterFill } from 'react-icons/pi';
@@ -94,24 +94,37 @@ const Annotator: React.FC<{ bookKey: string }> = ({ bookKey }) => {
     view?.deselect();
   };
 
-  // Memoize selection CFI to only trigger when selection actually changes
-  const selectionCfi = useMemo(() => {
-    // annotation: true means that an existing annotation was selected so skip it
-    if (!selection || selection.annotated) return null;
+  const [selectionWithCfi, setSelectionWithCfi] = useState<{ cfi: string; text: string } | null>(
+    null,
+  );
 
-    return view?.getCFI(selection.index, selection.range) || null;
-  }, [selection?.annotated, selection?.index, selection?.range, view]);
+  useEffect(() => {
+    // annotation: true means that an existing annotation was selected so skip it
+    if (!selection || selection.annotated) {
+      setSelectionWithCfi(null);
+      return;
+    }
+
+    const cfi = view?.getCFI(selection.index, selection.range);
+    if (!cfi) return;
+
+    if (selectionWithCfi?.cfi === cfi) return;
+
+    setSelectionWithCfi({
+      cfi,
+      text: selection.text,
+    });
+  }, [selection, view, selectionWithCfi]);
 
   // Record selection changes for reading assistant
   useEffect(() => {
-    if (selectionCfi && selection) {
+    if (selectionWithCfi) {
       onUserAction({
         type: 'textSelected',
-        text: selection.text,
-        cfi: selectionCfi,
+        ...selectionWithCfi,
       });
     }
-  }, [selectionCfi, selection?.text]);
+  }, [selectionWithCfi, onUserAction]);
 
   const {
     handleScroll,

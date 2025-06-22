@@ -1,3 +1,5 @@
+import { useCallback } from 'react';
+
 type TextSelectedAction = {
   type: 'textSelected';
   text: string;
@@ -13,14 +15,14 @@ type HighlightCreatedAction = {
 type UserAction = TextSelectedAction | HighlightCreatedAction;
 
 export function useReadingAssistant() {
-  const onUserAction = (action: UserAction) => {
+  const onUserAction = useCallback((action: UserAction) => {
     const eventWithTimestamp = {
       ...action,
       timestamp: new Date().toISOString(),
     };
 
     console.log('Reading Assistant Event:', eventWithTimestamp);
-  };
+  }, []);
 
   return { onUserAction };
 }
