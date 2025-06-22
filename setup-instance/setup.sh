@@ -67,8 +67,7 @@ cat > ecosystem.config.js << EOF
 module.exports = {
   apps: [{
     name: 'readest',
-    script: 'node_modules/next/dist/bin/next',
-    args: 'start',
+    script: 'server.js',
     cwd: '/home/${USER}/readest/apps/readest-app',
     env: {
       NODE_ENV: 'production',
@@ -102,6 +101,23 @@ server {
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto $scheme;
+    }
+
+    # Socket.IO specific configuration
+    location /socket.io/ {
+        proxy_pass http://localhost:3000/socket.io/;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+
+        # Socket.IO specific settings
+        proxy_buffering off;
+        proxy_set_header X-NginX-Proxy true;
+        proxy_redirect off;
     }
 }
 EOF

@@ -91,7 +91,14 @@ resource "google_compute_backend_service" "app_backend" {
     group = google_compute_instance_group.app_ig.self_link
   }
   health_checks         = [google_compute_health_check.http.self_link]
-  enable_cdn            = true  # flip to false if you don’t want edge caching
+  enable_cdn            = false  # Disabled for WebSocket compatibility
+
+  # Session affinity for Socket.IO
+  session_affinity      = "CLIENT_IP"
+  affinity_cookie_ttl_sec = 3600
+
+  # Timeout settings for WebSocket connections
+  timeout_sec           = 3600  # 1 hour timeout for long-lived connections
 }
 
 resource "google_compute_url_map" "app_map" {
