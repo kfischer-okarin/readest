@@ -7,6 +7,7 @@ import { useSidebarStore } from '@/store/sidebarStore';
 import { useReadingAssistantStore } from '@/store/readingAssistantStore';
 import { useDrag } from '@/hooks/useDrag';
 import Header from './Header';
+import SocketExample from '@/components/SocketExample';
 
 const MIN_WIDTH = 0.15;
 const MAX_WIDTH = 0.45;
@@ -15,13 +16,13 @@ const ReadingAssistant: React.FC = () => {
   const { appService } = useEnv();
   const { updateAppTheme } = useThemeStore();
   const { sideBarBookKey } = useSidebarStore();
-  const { 
-    readingAssistantWidth, 
-    isReadingAssistantVisible, 
+  const {
+    readingAssistantWidth,
+    isReadingAssistantVisible,
     isReadingAssistantPinned,
     setReadingAssistantWidth,
     setReadingAssistantVisible,
-    toggleReadingAssistantPin
+    toggleReadingAssistantPin,
   } = useReadingAssistantStore();
 
   useEffect(() => {
@@ -97,9 +98,7 @@ const ReadingAssistant: React.FC = () => {
           />
         </div>
         <div className='flex-grow overflow-y-auto px-3'>
-          <div className='flex h-full items-center justify-center text-gray-500'>
-            <p className='text-center'>Reading Assistant content will appear here</p>
-          </div>
+          <SocketExample />
         </div>
       </div>
     </>
