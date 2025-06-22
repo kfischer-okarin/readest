@@ -8,10 +8,11 @@ import {
   sendMessage,
   onMessage,
   offMessage,
+  Message,
 } from '@/utils/socket';
 
 export default function SocketExample() {
-  const [messages, setMessages] = useState<Array<{ text: string; timestamp: string }>>([]);
+  const [messages, setMessages] = useState<Array<Message>>([]);
   const [inputValue, setInputValue] = useState('');
   const [isConnected, setIsConnected] = useState(false);
 
@@ -32,8 +33,8 @@ export default function SocketExample() {
       setIsConnected(false);
     });
 
-    const handleMessage = (data: { text: string; timestamp: string }) => {
-      setMessages((prev) => [...prev, data]);
+    const handleMessage = (message: Message) => {
+      setMessages((prev) => [...prev, message]);
     };
 
     onMessage(handleMessage);
