@@ -1,55 +1,28 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import {
-  initSocket,
-  connectSocket,
-  disconnectSocket,
-  sendMessage,
-  onMessage,
-  offMessage,
-  Message,
-} from '@/utils/socket';
+import { useState, useCallback } from 'react';
+import { useSocket } from '@/hooks/useSocket';
+import { Message, ServerMessages, ClientMessages } from '@/utils/socket';
 
 export default function SocketExample() {
   const [messages, setMessages] = useState<Array<Message>>([]);
   const [inputValue, setInputValue] = useState('');
-  const [isConnected, setIsConnected] = useState(false);
 
-  useEffect(() => {
-    if (typeof window === 'undefined') {
-      return;
-    }
-
-    const socket = initSocket();
-
-    socket.on('connect', () => {
-      console.log('Socket connected');
-      setIsConnected(true);
-    });
-
-    socket.on('disconnect', () => {
-      console.log('Socket disconnected');
-      setIsConnected(false);
-    });
-
-    const handleMessage = (message: Message) => {
-      setMessages((prev) => [...prev, message]);
-    };
-
-    onMessage(handleMessage);
-    connectSocket();
-
-    return () => {
-      offMessage(handleMessage);
-      disconnectSocket();
-    };
+  const handleMessage = useCallback((message: Message) => {
+    setMessages((prev) => [...prev, message]);
   }, []);
+
+  const socket = useSocket<ServerMessages, ClientMessages>({
+    message: handleMessage,
+  });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (inputValue.trim()) {
-      sendMessage(inputValue);
+      socket.emit('message', {
+        text: inputValue,
+        timestamp: new Date().toISOString(),
+      });
       setInputValue('');
     }
   };
@@ -59,10 +32,10 @@ export default function SocketExample() {
       <div className='mb-4'>
         <span
           className={`inline-block rounded px-2 py-1 text-sm ${
-            isConnected ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+            socket.connected ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
           }`}
         >
-          {isConnected ? 'Connected' : 'Disconnected'}
+          {socket.connected ? 'Connected' : 'Disconnected'}
         </span>
       </div>
 
@@ -74,11 +47,11 @@ export default function SocketExample() {
             onChange={(e) => setInputValue(e.target.value)}
             placeholder='Type a message...'
             className='flex-1 rounded-md border px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500'
-            disabled={!isConnected}
+            disabled={!socket.connected}
           />
           <button
             type='submit'
-            disabled={!isConnected}
+            disabled={!socket.connected}
             className='rounded-md bg-blue-500 px-4 py-2 text-white hover:bg-blue-600 disabled:cursor-not-allowed disabled:bg-gray-300'
           >
             Send
