@@ -12,6 +12,7 @@ import { usePagination } from '../hooks/usePagination';
 import { useFoliateEvents } from '../hooks/useFoliateEvents';
 import { useProgressSync } from '../hooks/useProgressSync';
 import { useProgressAutoSave } from '../hooks/useProgressAutoSave';
+import { useReadingAssistant } from '../hooks/useReadingAssistant';
 import { getStyles, transformStylesheet } from '@/utils/style';
 import { mountAdditionalFonts } from '@/utils/font';
 import { getBookDirFromLanguage, getBookDirFromWritingMode } from '@/utils/book';
@@ -48,6 +49,8 @@ const FoliateViewer: React.FC<{
   const { getParallels } = useParallelViewStore();
   const { getBookData } = useBookDataStore();
   const { themeCode, isDarkMode } = useThemeStore();
+  const [displayedCFI, setDisplayedCFI] = useState<string | null>(null);
+  const { onUserAction } = useReadingAssistant();
 
   const [toastMessage, setToastMessage] = useState('');
   useEffect(() => {
@@ -62,6 +65,8 @@ const FoliateViewer: React.FC<{
 
   const progressRelocateHandler = (event: Event) => {
     const detail = (event as CustomEvent).detail;
+    setDisplayedCFI(detail.cfi);
+
     setProgress(
       bookKey,
       detail.cfi,
@@ -72,6 +77,15 @@ const FoliateViewer: React.FC<{
       detail.range,
     );
   };
+
+  useEffect(() => {
+    if (displayedCFI) {
+      onUserAction({
+        type: 'pageTurned',
+        cfi: displayedCFI,
+      });
+    }
+  }, [displayedCFI]);
 
   const getDocTransformHandler = ({ width, height }: { width: number; height: number }) => {
     return (event: Event) => {

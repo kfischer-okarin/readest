@@ -10,7 +10,12 @@ export type HighlightCreatedAction = {
   cfi: string;
 };
 
-export type UserAction = TextSelectedAction | HighlightCreatedAction;
+export type PageTurnedAction = {
+  type: 'pageTurned';
+  cfi: string;
+};
+
+export type UserAction = TextSelectedAction | HighlightCreatedAction | PageTurnedAction;
 
 export type ServerMessages = object;
 
