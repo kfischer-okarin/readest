@@ -81,6 +81,7 @@
     "react-responsive": "^10.0.0",
     "react-window": "^1.8.11",
     "semver": "^7.7.1",
+    "server-only": "^0.0.1",
     "socket.io": "^4.8.1",
     "socket.io-client": "^4.8.1",
     "tinycolor2": "^1.6.0",
@@ -115,5 +116,10 @@
     "tsx": "^4.19.2",
     "typescript": "^5.7.2",
     "wrangler": "^4.19.1"
+  },
+  "dependencyComments": {
+    "socket.io": "For reading assistant communication between client and server",
+    "server-only": "For server-only functions to avoid sensitive server code from being exposed to client",
+    "tsx": "For running server.ts directly"
   }
 }
