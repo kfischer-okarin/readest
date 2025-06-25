@@ -1,5 +1,6 @@
 import { useCallback, useRef, useEffect } from 'react';
-import { buildClient, Client, UserAction } from '@/services/readingAssistant';
+import { buildClient, Client } from '@/services/readingAssistant/client';
+import type { UserAction } from '@/services/readingAssistant/types';
 
 export function useReadingAssistant() {
   const clientRef = useRef<Client | null>(null);
