@@ -1,4 +1,5 @@
 import { io, Socket } from 'socket.io-client';
+
 import type { ServerMessages, ClientMessages, UserAction } from './types';
 
 export interface Client {

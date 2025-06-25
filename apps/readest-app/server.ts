@@ -1,7 +1,7 @@
 import { createServer, IncomingMessage, ServerResponse } from 'http';
 import { parse } from 'url';
 import next from 'next';
-import { Server } from 'socket.io';
+import { buildServer } from './src/services/readingAssistant/server';
 
 const dev = process.env.NODE_ENV !== 'production';
 const hostname = 'localhost';
@@ -22,24 +22,7 @@ app.prepare().then(() => {
     }
   });
 
-  const io = new Server(server, {
-    cors: {
-      origin: dev ? 'http://localhost:3000' : false,
-      methods: ['GET', 'POST'],
-    },
-  });
-
-  io.on('connection', (socket) => {
-    console.log('Client connected:', socket.id);
-
-    socket.on('userAction', (data) => {
-      console.log('Received user action:', data);
-    });
-
-    socket.on('disconnect', () => {
-      console.log('Client disconnected:', socket.id);
-    });
-  });
+  buildServer(server, dev);
 
   server.listen(port, () => {
     console.log(`> Ready on http://${hostname}:${port}`);
