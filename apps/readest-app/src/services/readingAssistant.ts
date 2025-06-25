@@ -24,7 +24,7 @@ export interface Client {
 }
 
 export const buildClient = (): Client => {
-  const socket: Socket<{}, ClientMessages> = io();
+  const socket: Socket<object, ClientMessages> = io();
 
   return {
     sendUserAction: (action: UserAction) => {
