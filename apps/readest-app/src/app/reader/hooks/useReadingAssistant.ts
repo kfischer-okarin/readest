@@ -1,20 +1,24 @@
-import { useCallback } from 'react';
-import { UserAction, ClientMessages } from '@/services/readingAssistant';
-import { useSocket } from '@/hooks/useSocket';
+import { useCallback, useRef, useEffect } from 'react';
+import { ReadingAssistantClient, UserAction } from '@/services/readingAssistant';
 
 export function useReadingAssistant() {
-  const { emit, connected } = useSocket<{}, ClientMessages>({});
+  const clientRef = useRef<ReadingAssistantClient | null>(null);
 
-  const onUserAction = useCallback(
-    (action: UserAction) => {
-      const timestamp = new Date().toISOString();
+  useEffect(() => {
+    const client = new ReadingAssistantClient();
+    clientRef.current = client;
 
-      if (connected) {
-        emit('userAction', { action, timestamp });
-      }
-    },
-    [emit, connected],
-  );
+    return () => {
+      client.disconnect();
+      clientRef.current = null;
+    };
+  }, []);
+
+  const onUserAction = useCallback((action: UserAction) => {
+    if (clientRef.current) {
+      clientRef.current.sendUserAction(action);
+    }
+  }, []);
 
   return { onUserAction };
 }
