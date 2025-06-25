@@ -2,7 +2,19 @@
 
 import { useState, useCallback } from 'react';
 import { useSocket } from '@/hooks/useSocket';
-import { Message, ServerMessages, ClientMessages } from '@/utils/socket';
+
+type Message = {
+  text: string;
+  timestamp: string;
+};
+
+interface ServerMessages {
+  message: (message: Message) => void;
+}
+
+interface ClientMessages {
+  message: (message: Message) => void;
+}
 
 export default function SocketExample() {
   const [messages, setMessages] = useState<Array<Message>>([]);
