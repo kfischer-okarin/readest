@@ -14,6 +14,8 @@ type HighlightCreatedAction = {
 
 export type UserAction = TextSelectedAction | HighlightCreatedAction;
 
+type ServerMessages = object;
+
 type ClientMessages = {
   userAction: (data: { action: UserAction; timestamp: string }) => void;
 };
@@ -24,7 +26,7 @@ export interface Client {
 }
 
 export const buildClient = (): Client => {
-  const socket: Socket<object, ClientMessages> = io();
+  const socket: Socket<ServerMessages, ClientMessages> = io();
 
   return {
     sendUserAction: (action: UserAction) => {
