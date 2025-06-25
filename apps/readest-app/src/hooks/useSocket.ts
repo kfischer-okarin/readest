@@ -5,9 +5,7 @@ import { useSocketContext, ServerMessages, ClientMessages } from '@/context/Sock
 
 type ServerEventType = keyof ServerMessages;
 
-type ServerEventHandlers = {
-  [K in ServerEventType]?: ServerMessages[K];
-};
+type ServerEventHandlers = Partial<ServerMessages>;
 
 type ClientEventType = keyof ClientMessages;
 
