@@ -1,18 +1,5 @@
 import { useCallback } from 'react';
-
-type TextSelectedAction = {
-  type: 'textSelected';
-  text: string;
-  cfi: string;
-};
-
-type HighlightCreatedAction = {
-  type: 'highlightCreated';
-  text: string;
-  cfi: string;
-};
-
-type UserAction = TextSelectedAction | HighlightCreatedAction;
+import { UserAction } from '@/services/readingAssistant';
 
 export function useReadingAssistant() {
   const onUserAction = useCallback((action: UserAction) => {
