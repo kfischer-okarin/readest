@@ -3,12 +3,12 @@
   "version": "0.9.57",
   "private": true,
   "scripts": {
-    "dev": "dotenv -e .env.tauri -- node server.js",
+    "dev": "dotenv -e .env.tauri -- tsx server.ts",
     "build": "dotenv -e .env.tauri -- next build",
-    "start": "dotenv -e .env.tauri -- NODE_ENV=production node server.js",
-    "dev-web": "dotenv -e .env.web -- node server.js",
+    "start": "dotenv -e .env.tauri -- NODE_ENV=production tsx server.ts",
+    "dev-web": "dotenv -e .env.web -- tsx server.ts",
     "build-web": "dotenv -e .env.web -- next build",
-    "start-web": "dotenv -e .env.web -- NODE_ENV=production node server.js",
+    "start-web": "dotenv -e .env.web -- NODE_ENV=production tsx server.ts",
     "i18n:extract": "i18next-scanner",
     "lint": "next lint",
     "tauri": "tauri",
@@ -112,6 +112,7 @@
     "postcss-nested": "^7.0.2",
     "raw-loader": "^4.0.2",
     "tailwindcss": "^3.4.17",
+    "tsx": "^4.19.2",
     "typescript": "^5.7.2",
     "wrangler": "^4.19.1"
   }

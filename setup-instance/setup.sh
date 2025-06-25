@@ -57,9 +57,9 @@ echo "9. Building application..."
 cd apps/readest-app
 pnpm build-web
 
-# Install PM2 for process management
-echo "10. Installing PM2..."
-sudo npm install -g pm2
+# Install PM2 and tsx for process management
+echo "10. Installing PM2 and tsx..."
+sudo npm install -g pm2 tsx
 
 # Create PM2 ecosystem file
 echo "11. Creating PM2 configuration..."
@@ -67,7 +67,8 @@ cat > ecosystem.config.js << EOF
 module.exports = {
   apps: [{
     name: 'readest',
-    script: 'server.js',
+    script: 'server.ts',
+    interpreter: 'tsx',
     cwd: '/home/${USER}/readest/apps/readest-app',
     env: {
       NODE_ENV: 'production',
