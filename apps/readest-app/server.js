@@ -32,12 +32,8 @@ app.prepare().then(() => {
   io.on('connection', (socket) => {
     console.log('Client connected:', socket.id);
 
-    socket.on('message', (data) => {
-      console.log('Received message:', data);
-      socket.emit('message', {
-        text: `Echo: ${data.text}`,
-        timestamp: new Date().toISOString(),
-      });
+    socket.on('userAction', (data) => {
+      console.log('Received user action:', data);
     });
 
     socket.on('disconnect', () => {

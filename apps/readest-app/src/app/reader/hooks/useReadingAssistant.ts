@@ -1,15 +1,20 @@
 import { useCallback } from 'react';
-import { UserAction } from '@/services/readingAssistant';
+import { UserAction, ClientMessages } from '@/services/readingAssistant';
+import { useSocket } from '@/hooks/useSocket';
 
 export function useReadingAssistant() {
-  const onUserAction = useCallback((action: UserAction) => {
-    const eventWithTimestamp = {
-      ...action,
-      timestamp: new Date().toISOString(),
-    };
+  const { emit, connected } = useSocket<{}, ClientMessages>({});
 
-    console.log('Reading Assistant Event:', eventWithTimestamp);
-  }, []);
+  const onUserAction = useCallback(
+    (action: UserAction) => {
+      const timestamp = new Date().toISOString();
+
+      if (connected) {
+        emit('userAction', { action, timestamp });
+      }
+    },
+    [emit, connected],
+  );
 
   return { onUserAction };
 }

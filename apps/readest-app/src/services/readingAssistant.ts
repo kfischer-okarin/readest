@@ -11,3 +11,7 @@ export type HighlightCreatedAction = {
 };
 
 export type UserAction = TextSelectedAction | HighlightCreatedAction;
+
+export type ClientMessages = {
+  userAction: (data: { action: UserAction; timestamp: string }) => void;
+};
