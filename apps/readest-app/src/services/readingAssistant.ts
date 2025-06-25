@@ -18,28 +18,24 @@ type ClientMessages = {
   userAction: (data: { action: UserAction; timestamp: string }) => void;
 };
 
-export class ReadingAssistantClient {
-  private _socket: Socket<{}, ClientMessages> | null = null;
-
-  constructor() {
-    this._socket = io();
-  }
-
-  sendUserAction(action: UserAction) {
-    const timestamp = new Date().toISOString();
-
-    if (!this._socket) {
-      console.error('Socket is not initialized');
-      return;
-    }
-
-    this._socket.emit('userAction', { action, timestamp });
-  }
-
-  disconnect() {
-    if (this._socket) {
-      this._socket.disconnect();
-      this._socket = null;
-    }
-  }
+export interface Client {
+  sendUserAction: (action: UserAction) => void;
+  disconnect: () => void;
 }
+
+export const buildClient = (): Client => {
+  const socket: Socket<{}, ClientMessages> = io();
+
+  return {
+    sendUserAction: (action: UserAction) => {
+      const timestamp = new Date().toISOString();
+
+      socket.emit('userAction', { action, timestamp });
+    },
+    disconnect: () => {
+      if (socket) {
+        socket.disconnect();
+      }
+    },
+  };
+};

@@ -1,11 +1,11 @@
 import { useCallback, useRef, useEffect } from 'react';
-import { ReadingAssistantClient, UserAction } from '@/services/readingAssistant';
+import { buildClient, Client, UserAction } from '@/services/readingAssistant';
 
 export function useReadingAssistant() {
-  const clientRef = useRef<ReadingAssistantClient | null>(null);
+  const clientRef = useRef<Client | null>(null);
 
   useEffect(() => {
-    const client = new ReadingAssistantClient();
+    const client = buildClient();
     clientRef.current = client;
 
     return () => {
