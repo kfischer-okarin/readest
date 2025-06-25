@@ -1,8 +1,24 @@
 'use client';
 
 import { useState, useCallback } from 'react';
-import { Message } from '@/context/SocketContext';
 import { useSocket } from '@/hooks/useSocket';
+
+// Define message types
+type Message = {
+  text: string;
+  timestamp: string;
+};
+
+// Define socket event types
+interface ServerMessages {
+  message: (message: Message) => void;
+  // Add more server-to-client events here
+}
+
+interface ClientMessages {
+  message: (message: Message) => void;
+  // Add more client-to-server events here
+}
 
 export default function SocketExample() {
   const [messages, setMessages] = useState<Array<Message>>([]);
@@ -12,7 +28,7 @@ export default function SocketExample() {
     setMessages((prev) => [...prev, message]);
   }, []);
 
-  const socket = useSocket({
+  const socket = useSocket<ServerMessages, ClientMessages>({
     message: handleMessage,
   });
 

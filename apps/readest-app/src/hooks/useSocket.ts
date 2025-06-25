@@ -1,52 +1,80 @@
 'use client';
 
-import { useCallback, useEffect } from 'react';
-import { useSocketContext, ServerMessages, ClientMessages } from '@/context/SocketContext';
+import { useCallback, useEffect, useState, useRef } from 'react';
+import { io, Socket } from 'socket.io-client';
 
-type ServerEventType = keyof ServerMessages;
+type MessageTypes = Record<string, any>;
 
-type ServerEventHandlers = Partial<ServerMessages>;
+type ServerMessageHandlers<T extends MessageTypes> = Partial<T>;
 
-type ClientEventType = keyof ClientMessages;
+type MessageName<T extends MessageTypes> = keyof T & string;
 
-type EmitFunction = <E extends ClientEventType>(
+type EmitFunction<T extends MessageTypes> = <E extends MessageName<T>>(
   event: E,
-  ...data: Parameters<ClientMessages[E]>
+  ...data: Parameters<T[E]>
 ) => void;
 
-export function useSocket(handlers: ServerEventHandlers) {
-  const { connected, socket } = useSocketContext();
+export function useSocket<ServerMessages extends MessageTypes, ClientMessages extends MessageTypes>(
+  handlers: ServerMessageHandlers<ServerMessages>,
+) {
+  const [connected, setConnected] = useState(false);
+  const socketRef = useRef<Socket<ServerMessages, ClientMessages> | null>(null);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') {
+      return;
+    }
+
+    // Create socket instance
+    const socket: Socket<ServerMessages, ClientMessages> = io();
+    socketRef.current = socket;
+
+    // Set up connection handlers
+    socket.on('connect', () => {
+      setConnected(true);
+    });
+
+    socket.on('disconnect', () => {
+      setConnected(false);
+    });
+
+    // Cleanup
+    return () => {
+      socket.disconnect();
+      socketRef.current = null;
+    };
+  }, []);
 
   // Register/unregister event handlers
   useEffect(() => {
+    const socket = socketRef.current;
     if (!socket || !handlers) {
       return;
     }
 
     // Register all handlers
     Object.entries(handlers).forEach(([event, handler]) => {
-      socket.on(event as ServerEventType, handler);
+      socket.on(event, handler);
     });
 
     // Cleanup: unregister all handlers
     return () => {
       Object.entries(handlers).forEach(([event, handler]) => {
-        socket.off(event as ServerEventType, handler);
+        socket.off(event, handler);
       });
     };
-  }, [socket, handlers]);
+  }, [handlers]);
 
-  const emit = useCallback<EmitFunction>(
-    (event, ...data) => {
-      if (socket) {
-        socket.emit(event, ...data);
-      }
-    },
-    [socket],
-  );
+  const emit = useCallback<EmitFunction<ClientMessages>>((event, ...data) => {
+    const socket = socketRef.current;
+    if (socket) {
+      socket.emit(event, ...data);
+    }
+  }, []);
 
   return {
     connected,
     emit,
+    socket: socketRef.current,
   };
 }
