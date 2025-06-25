@@ -7,7 +7,6 @@ import { useSidebarStore } from '@/store/sidebarStore';
 import { useReadingAssistantStore } from '@/store/readingAssistantStore';
 import { useDrag } from '@/hooks/useDrag';
 import Header from './Header';
-import SocketExample from '@/components/SocketExample';
 
 const MIN_WIDTH = 0.15;
 const MAX_WIDTH = 0.45;
@@ -98,7 +97,6 @@ const ReadingAssistant: React.FC = () => {
           />
         </div>
         <div className='flex-grow overflow-y-auto px-3'>
-          <SocketExample />
         </div>
       </div>
     </>
